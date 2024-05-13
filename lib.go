@@ -3,6 +3,8 @@ package lib
 import (
 	"fmt"
 	"os"
+	"regexp"
+	"strconv"
 )
 
 func GetInput() string {
@@ -17,4 +19,16 @@ func GetInput() string {
 	path := fmt.Sprintf("%s/cmd/%s/%s.txt", pwd, day, inputFileName)
 	b, _ := os.ReadFile(path)
 	return string(b)
+}
+
+var NumRegex = regexp.MustCompile(`-?\d+`)
+
+func ParseNums(s string) []int {
+	ss := NumRegex.FindAllString(s, -1)
+	nums := make([]int, len(ss))
+	for i, str := range ss {
+		n, _ := strconv.Atoi(str)
+		nums[i] = n
+	}
+	return nums
 }
