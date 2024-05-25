@@ -32,3 +32,9 @@ func ParseNums(s string) []int {
 	}
 	return nums
 }
+
+type Vector struct {
+	X, Y int
+}
+
+var DIRS = []Vector{{0, 1}, {1, 0}, {0, -1}, {-1, 0}}
