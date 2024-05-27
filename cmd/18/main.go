@@ -7,39 +7,39 @@ import (
 )
 
 func countSafe(input string, numRows int) int {
-	grid := make([][]bool, 0, numRows)
-	grid = append(grid, make([]bool, 0, len(input)))
+	totalSafe := 0
+
+	lastRow := make([]bool, 0, len(input))
 	for _, c := range input {
-		grid[0] = append(grid[0], c == '^')
+		isTrap := c == '^'
+		lastRow = append(lastRow, isTrap)
+		if !isTrap {
+			totalSafe++
+		}
 	}
 
 	for row := 1; row < numRows; row++ {
-		grid = append(grid, make([]bool, 0, len(input)))
+		nextRow := make([]bool, 0, len(input))
 		for i := 0; i < len(input); i++ {
 			left := false
 			if i > 0 {
-				left = grid[row-1][i-1]
+				left = lastRow[i-1]
 			}
-			center := grid[row-1][i]
+			center := lastRow[i]
 			right := false
 			if i < len(input)-1 {
-				right = grid[row-1][i+1]
+				right = lastRow[i+1]
 			}
 			isTrap := (left && center && !right) || (!left && center && right) || (left && !center && !right) || (!left && !center && right)
-			grid[row] = append(grid[row], isTrap)
-		}
-	}
-
-	total := 0
-	for _, row := range grid {
-		for _, isTrap := range row {
+			nextRow = append(nextRow, isTrap)
 			if !isTrap {
-				total++
+				totalSafe++
 			}
 		}
+		lastRow = nextRow
 	}
 
-	return total
+	return totalSafe
 }
 
 func main() {
