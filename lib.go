@@ -38,3 +38,17 @@ type Vector struct {
 }
 
 var DIRS = []Vector{{0, 1}, {1, 0}, {0, -1}, {-1, 0}}
+
+func StringPermutations(s string) []string {
+	if len(s) == 1 {
+		return []string{s}
+	}
+	perms := []string{}
+	for i, c := range s {
+		rest := s[:i] + s[i+1:]
+		for _, perm := range StringPermutations(rest) {
+			perms = append(perms, string(c)+perm)
+		}
+	}
+	return perms
+}
